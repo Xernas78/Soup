@@ -20,7 +20,6 @@ import dev.xernas.photon.utils.ShaderResource;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -42,6 +41,7 @@ public class GameOfLife {
     private boolean paused;
     private float fps;
     private int simulationSpeed = AppConstants.DEFAULT_SIMULATION_SPEED;
+    private float zoom = 1f;
 
     public GameOfLife(Window window, Grid grid) {
         this.window = window;
@@ -80,9 +80,13 @@ public class GameOfLife {
             for (Grid.Cell cell : cells) {
                 renderer.render(shader, cellMesh, (m, s) -> {
                     s.setUniform("projectionMatrix", MatrixUtils.createOrthoMatrix(window));
-                    Vector3f position = new Vector3f(cell.getX() * (grid.getCellSize() + AppConstants.CELL_SPACING) - grid.getWorldWidth() / 2, cell.getY() * (grid.getCellSize() + AppConstants.CELL_SPACING) - grid.getWorldHeight() / 2, 0);
+                    Vector3f position = new Vector3f(
+                            cell.getX() * (grid.getCellSize() + AppConstants.CELL_SPACING) - grid.getWorldWidth() / 2,
+                            cell.getY() * (grid.getCellSize() + AppConstants.CELL_SPACING) - grid.getWorldHeight() / 2,
+                            0f
+                    );
                     s.setUniform("modelMatrix", MatrixUtils.createTransformationMatrix(new Transform(position).scale(grid.getCellSize())));
-                    s.setUniform("viewMatrix", MatrixUtils.createViewMatrix(camera));
+                    s.setUniform("viewMatrix", MatrixUtils.create2DViewMatrix(camera));
                 });
             }
 
@@ -114,9 +118,9 @@ public class GameOfLife {
         if (window.getInput().isPressing(Key.MOUSE_MIDDLE)) {
             window.setCursorShape(CursorShape.HAND);
             if (cameraStartPos == null) {
-                cameraStartPos = window.getInput().getMousePosition().toWorldSpace(window);
+                cameraStartPos = window.getInput().getMouse().toWorldSpace(window);
             } else {
-                Vector2f currentMousePos = window.getInput().getMousePosition().toWorldSpace(window);
+                Vector2f currentMousePos = window.getInput().getMouse().toWorldSpace(window);
                 cameraDeltaDir = new Vector2f(currentMousePos).sub(cameraStartPos);
                 cameraStartPos.set(currentMousePos);
             }
@@ -159,6 +163,13 @@ public class GameOfLife {
             paused = true;
             grid.resetGrid();
         }
+        // Zooming in and out with mouse scroll
+        if (window.getInput().getMouse().hasScrolled()) {
+            float scrollDelta = window.getInput().getMouse().getScroll();
+            zoom += scrollDelta * 0.1f;
+            zoom = Math.max(0.1f, zoom);
+            window.getInput().resetScrollDelta();
+        }
     }
 
     private void start() throws PhotonException {
@@ -181,7 +192,7 @@ public class GameOfLife {
 
     private Vector2f getMouseCameraPos() {
         // Get mouse position in world space CONSIDERING CAMERA POSITION
-        Vector2f mousePos = window.getInput().getMousePosition().toWorldSpace(window);
+        Vector2f mousePos = window.getInput().getMouse().toWorldSpace(window);
         mousePos.add(new Vector2f(camera.getPosition().x, camera.getPosition().y));
         mousePos.add(new Vector2f(grid.getWorldWidth() / 2, grid.getWorldHeight() / 2));
         return mousePos;
@@ -200,5 +211,4 @@ public class GameOfLife {
             throw new PhotonException("Failed to load shader files from resources", e);
         }
     }
-
 }
