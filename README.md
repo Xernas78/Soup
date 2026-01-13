@@ -8,7 +8,6 @@ Except for the fact that all librairies with the exception of LWJGL are mine
 - Middle click to move around
 - Space/Enter to pause/resume the simulation
 - Arrow Up/Down to increase/decrease simulation speed
-- S to step one generation when paused. If not paused, it will pause first
 - Hold R to kill all cells
 
 ## Download
