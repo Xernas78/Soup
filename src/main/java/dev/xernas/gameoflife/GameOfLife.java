@@ -180,6 +180,7 @@ public class GameOfLife {
 
         window.show();
         running = true;
+        paused = true;
     }
 
     private void clean() throws PhotonException {
