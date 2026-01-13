@@ -80,8 +80,8 @@ public class GameOfLife {
                 renderer.render(shader, cellMesh, (m, s) -> {
                     s.setUniform("projectionMatrix", MatrixUtils.createOrthoMatrix(window));
                     Vector3f position = new Vector3f(
-                            cell.getX() * (grid.getCellSize() + AppConstants.CELL_SPACING) - grid.getWorldWidth() / 2,
-                            cell.getY() * (grid.getCellSize() + AppConstants.CELL_SPACING) - grid.getWorldHeight() / 2,
+                            cell.getX() * (grid.getCellSize() + Grid.cellSpacing) - grid.getWorldWidth() / 2,
+                            cell.getY() * (grid.getCellSize() + Grid.cellSpacing) - grid.getWorldHeight() / 2,
                             0f
                     );
                     s.setUniform("modelMatrix", MatrixUtils.createTransformationMatrix(new Transform(position).scale(grid.getCellSize())));
@@ -131,16 +131,16 @@ public class GameOfLife {
         if (window.getInput().isPressing(Key.MOUSE_LEFT)) {
             paused = true;
             Vector2f mouseWorldPos = getMouseCameraPos();
-            int cellX = (int) (mouseWorldPos.x / (grid.getCellSize() + AppConstants.CELL_SPACING));
-            int cellY = (int) (mouseWorldPos.y / (grid.getCellSize() + AppConstants.CELL_SPACING));
+            int cellX = (int) (mouseWorldPos.x / (grid.getCellSize() + Grid.cellSpacing));
+            int cellY = (int) (mouseWorldPos.y / (grid.getCellSize() + Grid.cellSpacing));
             grid.setCellState(cellX, cellY, true);
         }
         // Managing cell death with right mouse button
         if (window.getInput().isPressing(Key.MOUSE_RIGHT)) {
             paused = true;
             Vector2f mouseWorldPos = getMouseCameraPos();
-            int cellX = (int) (mouseWorldPos.x / (grid.getCellSize() + AppConstants.CELL_SPACING));
-            int cellY = (int) (mouseWorldPos.y / (grid.getCellSize() + AppConstants.CELL_SPACING));
+            int cellX = (int) (mouseWorldPos.x / (grid.getCellSize() + Grid.cellSpacing));
+            int cellY = (int) (mouseWorldPos.y / (grid.getCellSize() + Grid.cellSpacing));
             grid.setCellState(cellX, cellY, false);
         }
         // Toggling pause with space key
@@ -156,6 +156,13 @@ public class GameOfLife {
         if (window.getInput().hasPressed(Key.KEY_ARROW_DOWN) || window.getInput().hasHold(Key.KEY_ARROW_DOWN)) {
             paused = false;
             simulationSpeed = Math.max(1, simulationSpeed - 1);
+        }
+        // Adjusting cell spacing
+        if (window.getInput().hasPressed(Key.KEY_ARROW_RIGHT) || window.getInput().hasHold(Key.KEY_ARROW_RIGHT)) {
+            Grid.cellSpacing += 0.001f;
+        }
+        if (window.getInput().hasPressed(Key.KEY_ARROW_LEFT) || window.getInput().hasHold(Key.KEY_ARROW_LEFT)) {
+            Grid.cellSpacing = Math.max(0f, Grid.cellSpacing - 0.001f);
         }
         // Resetting simulation
         if (window.getInput().hasHold(Key.KEY_R)) {
