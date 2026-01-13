@@ -95,9 +95,7 @@ public class GameOfLife {
 
             // Timers
             if (accumulator >= (float) 1 / simulationSpeed) {
-                if (!paused) {
-                    grid.updateCells();
-                }
+                if (!paused) grid.updateCells();
                 accumulator = 0f;
             }
             if (fpsTimer >= 1f) {
@@ -191,7 +189,6 @@ public class GameOfLife {
 
         window.show();
         running = true;
-        paused = true;
     }
 
     private void clean() throws PhotonException {
