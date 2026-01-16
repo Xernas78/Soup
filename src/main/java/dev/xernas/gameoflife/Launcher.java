@@ -10,7 +10,7 @@ public class Launcher {
     public static void main(String[] args) throws PhotonException {
         PhotonAPI.init(Library.OPENGL_4_6, "GameOfLife", "1.0.0", false);
 
-        Window window = new Window("Game Of Life", 800, 600);
+        Window window = new Window("Game Of Life", 1280, 720);
         Grid grid = new Grid(1000, 1000, 0.02f);
 
         GameOfLife app = new GameOfLife(window, grid);

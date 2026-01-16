@@ -7,7 +7,7 @@ public class Grid {
 
     private final Cell[][] grid;
     private final List<Cell> allCells = new ArrayList<>();
-    private final float cellSize;
+    private float cellSize;
 
     public Grid(int width, int height, float cellSize) {
         grid = new Cell[width][height];
@@ -79,6 +79,10 @@ public class Grid {
 
     public float getCellSize() {
         return cellSize;
+    }
+    
+    public void setCellSize(float cellSize) {
+        this.cellSize = cellSize;
     }
 
     public List<Cell> getAliveCells() {

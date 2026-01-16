@@ -6,6 +6,7 @@ Except for the fact that all librairies with the exception of LWJGL are mine
 - Left Click to make cells alive
 - Right Click to make cells dead
 - Middle click to move around
+- Scroll to zoom in/out
 - Space/Enter to pause/resume the simulation
 - Arrow Up/Down to increase/decrease simulation speed
 - S to step one generation when paused. If not paused, it will pause first
