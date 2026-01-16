@@ -137,7 +137,7 @@ public class GameOfLife {
             zoomLevel += scrollAmount * 0.001f;
             if (zoomLevel < 0.001f) zoomLevel = 0.001f;
             grid.setCellSize(zoomLevel);
-            
+
             Vector2f currentMousePos = window.getInput().getMouse().toWorldSpace(window);
             cameraDeltaDir = new Vector2f(currentMousePos.mul(zoomLevel).mul(-1));
         }
@@ -177,15 +177,16 @@ public class GameOfLife {
         }
         if (window.getInput().hasPressed(Key.KEY_ARROW_LEFT) || window.getInput().hasHold(Key.KEY_ARROW_LEFT)) {
             Grid.cellSpacing = Math.max(0f, Grid.cellSpacing - 0.001f);
-        // Single step update
-        if (window.getInput().hasPressed(Key.KEY_S) || window.getInput().hasHold(Key.KEY_S)) {
-            paused = true;
-            grid.updateCells();
-        }
-        // Resetting simulation
-        if (window.getInput().hasHold(Key.KEY_R)) {
-            paused = true;
-            grid.resetGrid();
+            // Single step update
+            if (window.getInput().hasPressed(Key.KEY_S) || window.getInput().hasHold(Key.KEY_S)) {
+                paused = true;
+                grid.updateCells();
+            }
+            // Resetting simulation
+            if (window.getInput().hasHold(Key.KEY_R)) {
+                paused = true;
+                grid.resetGrid();
+            }
         }
     }
 
