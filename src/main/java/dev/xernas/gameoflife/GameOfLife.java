@@ -177,16 +177,16 @@ public class GameOfLife {
         }
         if (window.getInput().hasPressed(Key.KEY_ARROW_LEFT) || window.getInput().hasHold(Key.KEY_ARROW_LEFT)) {
             Grid.setCellSpacing(Math.max(0f, Grid.getCellSpacing() - 0.001f));
-            // Single step update
-            if (window.getInput().hasPressed(Key.KEY_S) || window.getInput().hasHold(Key.KEY_S)) {
-                paused = true;
-                grid.updateCells();
-            }
-            // Resetting simulation
-            if (window.getInput().hasHold(Key.KEY_R)) {
-                paused = true;
-                grid.resetGrid();
-            }
+        }
+        // Single step update
+        if (window.getInput().hasPressed(Key.KEY_S) || window.getInput().hasHold(Key.KEY_S)) {
+            paused = true;
+            grid.updateCells();
+        }
+        // Resetting simulation
+        if (window.getInput().hasHold(Key.KEY_R)) {
+            paused = true;
+            grid.resetGrid();
         }
     }
 
