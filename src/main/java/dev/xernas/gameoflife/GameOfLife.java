@@ -162,6 +162,11 @@ public class GameOfLife {
             paused = false;
             simulationSpeed = Math.max(1, simulationSpeed - 1);
         }
+        // Single step update
+        if (window.getInput().hasPressed(Key.KEY_S) || window.getInput().hasHold(Key.KEY_S)) {
+            paused = true;
+            grid.updateCells();
+        }
         // Resetting simulation
         if (window.getInput().hasHold(Key.KEY_R)) {
             paused = true;
