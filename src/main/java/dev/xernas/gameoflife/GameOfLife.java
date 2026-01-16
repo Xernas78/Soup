@@ -43,6 +43,8 @@ public class GameOfLife {
     private float fps;
     private int simulationSpeed = AppConstants.DEFAULT_SIMULATION_SPEED;
 
+    private int generationCount = 0;
+
     public GameOfLife(Window window, Grid grid) {
         this.window = window;
         this.grid = grid;
@@ -66,7 +68,10 @@ public class GameOfLife {
             // Window
             window.update(renderer);
             if (!window.isOpen()) running = false;
-            window.setTitle(window.getDefaultTitle() + " | FPS: " + Math.round(fps) + " | Simulation speed: " + simulationSpeed + (paused ? " | (Paused)" : ""));
+            window.setTitle(window.getDefaultTitle() + " | FPS: " + Math.round(fps) +
+                    " | Simulation speed: " + simulationSpeed + "gen/s" +
+                    " | Generation: " + generationCount +
+                    (paused ? " | (Paused)" : ""));
 
             // Input
             input();
@@ -95,7 +100,10 @@ public class GameOfLife {
 
             // Timers
             if (accumulator >= (float) 1 / simulationSpeed) {
-                if (!paused) grid.updateCells();
+                if (!paused) {
+                    grid.updateCells();
+                    generationCount++;
+                }
                 accumulator = 0f;
             }
             if (fpsTimer >= 1f) {
@@ -134,8 +142,8 @@ public class GameOfLife {
         // Managing zoom with mouse scroll
         if (window.getInput().getMouse().hasScrolled()) {
             float scrollAmount = window.getInput().getMouse().getScroll();
-            zoomLevel += scrollAmount * 0.001f;
-            if (zoomLevel < 0.001f) zoomLevel = 0.001f;
+            zoomLevel += scrollAmount * AppConstants.ZOOM_INCREMENT;
+            if (zoomLevel < AppConstants.ZOOM_INCREMENT) zoomLevel = AppConstants.ZOOM_INCREMENT;
             grid.setCellSize(zoomLevel);
 
             Vector2f currentMousePos = window.getInput().getMouse().toWorldSpace(window);
@@ -182,6 +190,7 @@ public class GameOfLife {
         if (window.getInput().hasPressed(Key.KEY_S) || window.getInput().hasHold(Key.KEY_S)) {
             paused = true;
             grid.updateCells();
+            generationCount++;
         }
         // Resetting simulation
         if (window.getInput().hasHold(Key.KEY_R)) {
@@ -200,6 +209,7 @@ public class GameOfLife {
         cellMesh = renderer.loadMesh(cellModel);
 
         window.show();
+        paused = true;
         running = true;
     }
 

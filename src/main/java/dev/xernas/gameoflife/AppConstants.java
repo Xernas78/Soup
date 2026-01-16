@@ -7,6 +7,6 @@ public class AppConstants {
 
     public static final long SECOND_IN_NANOS = 1_000_000_000L;
     public static final int DEFAULT_SIMULATION_SPEED = 10; // Updates per second
-    // Cell spacing moved in Grid class
+    public static final float ZOOM_INCREMENT = 0.001f;
 
 }
